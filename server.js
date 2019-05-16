@@ -47,7 +47,14 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-
+app.get("/api/shorturl/:id", function (req, res) {
+  let id = req.params.id;
+  URL.findOne({shorten_URL: id}, (error, data) => {
+    if(error) res.send(error);
+    if(data) res.redirect(data.original_URL);
+    else res.send('Invalid URL');
+  });
+});
 
 app.post("/api/shorturl/new",async function (req, res) {
   console.log('Mongo state: ' + mongoose.connection.readyState);
